@@ -99,6 +99,7 @@ resource "libvirt_domain" "machine" {
   vcpu   = each.value.cpus
   memory = each.value.memory
 
+resource "libvirt_domain" "machine" {
   network_interface {
     network_id     = libvirt_network.kube_network_03.id
     wait_for_lease = true
@@ -111,15 +112,16 @@ resource "libvirt_domain" "machine" {
 
   coreos_ignition = libvirt_ignition.ignition[each.key].id
 
-graphics {
-  type        = "vnc"
-  listen_type = "address"
-}
+  graphics {
+    type        = "vnc"
+    listen_type = "address"
+  }
 
-console {
-  type        = "pty"
-  target_type = "serial"
-  target_port = "0"
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
 }
 
 output "ip_addresses" {
