@@ -122,9 +122,6 @@ resource "libvirt_domain" "machine" {
     target_port = "0"
   }
 
-  qemu_agent = true
-}
-
 output "ip_addresses" {
   value = { for key, machine in libvirt_domain.machine : key => machine.network_interface[0].addresses[0] if length(machine.network_interface[0].addresses) > 0 }
 }
