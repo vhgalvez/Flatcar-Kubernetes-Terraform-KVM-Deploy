@@ -111,16 +111,16 @@ resource "libvirt_domain" "machine" {
 
   coreos_ignition = libvirt_ignition.ignition[each.key].id
 
-  graphics {
-    type        = "vnc"
-    listen_type = "address"
-  }
+graphics {
+  type        = "vnc"
+  listen_type = "address"
+}
 
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
-  }
+console {
+  type        = "pty"
+  target_type = "serial"
+  target_port = "0"
+}
 
 output "ip_addresses" {
   value = { for key, machine in libvirt_domain.machine : key => machine.network_interface[0].addresses[0] if length(machine.network_interface[0].addresses) > 0 }
