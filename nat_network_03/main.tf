@@ -1,4 +1,3 @@
-# main.tf
 terraform {
   required_version = "= 1.9.6"
 
@@ -99,7 +98,6 @@ resource "libvirt_domain" "machine" {
   vcpu   = each.value.cpus
   memory = each.value.memory
 
-resource "libvirt_domain" "machine" {
   network_interface {
     network_id     = libvirt_network.kube_network_03.id
     wait_for_lease = true
