@@ -32,16 +32,16 @@ resource "libvirt_network" "kube_network_03" {
   }
 }
 
-resource "libvirt_pool" "volumetmp_03" {
-  name = "volumetmp_03"
+resource "libvirt_pool" "volumetmp_flatcar_03" {
+  name = "volumetmp_flatcar_03"
   type = "dir"
-  path = "/mnt/lv_data/organized_storage/volumes/volumetmp_03"
+  path = "/mnt/lv_data/organized_storage/volumes/volumetmp_flatcar_03"
 }
 
 resource "libvirt_volume" "base" {
   name   = "base"
   source = var.base_image
-  pool   = libvirt_pool.volumetmp_03.name
+  pool   = libvirt_pool.volumetmp_flatcar_03.name
   format = "qcow2"
 }
 
@@ -78,7 +78,7 @@ resource "libvirt_ignition" "ignition" {
   for_each = var.vm_definitions
 
   name    = "${each.key}-ignition"
-  pool    = libvirt_pool.volumetmp_03.name
+  pool    = libvirt_pool.volumetmp_flatcar_03.name
   content = data.ct_config.vm-ignitions[each.key].rendered
 }
 
@@ -87,7 +87,7 @@ resource "libvirt_volume" "vm_disk" {
 
   name           = "${each.key}-disk"
   base_volume_id = libvirt_volume.base.id
-  pool           = libvirt_pool.volumetmp_03.name
+  pool           = libvirt_pool.volumetmp_flatcar_03.name
   format         = "qcow2"
   size           = each.value.disk_size * 1024 * 1024 # size in MB converted to bytes
 }
