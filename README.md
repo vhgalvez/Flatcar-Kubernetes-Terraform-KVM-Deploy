@@ -556,10 +556,6 @@ url:   https://console.redhat.com/openshift/create/local
 | Bootstrap Node       |Flatcar linux container  |
 
 
-
-
-
-
 # Entrada para el Servidor Físico
 
 El servidor físico actúa como el anfitrión principal para las máquinas virtuales y otros servicios críticos. Es fundamental asegurar que este servidor esté configurado adecuadamente y mantenido en buen estado.
