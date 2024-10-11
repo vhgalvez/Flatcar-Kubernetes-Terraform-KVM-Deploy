@@ -1,7 +1,3 @@
-# Flatcar-Kubernetes-Terraform-KVM-Deploy
- Flatcar-Kubernetes-Terraform-KVM-Deploy
-
-
 # Terraform OpenShift KVM Deployment
 
 Este repositorio contiene tres subproyectos de Terraform que se deben ejecutar de manera independiente para evitar conflictos de nombres. Siga las instrucciones a continuación para inicializar y aplicar cada subproyecto.
@@ -10,7 +6,7 @@ Este repositorio contiene tres subproyectos de Terraform que se deben ejecutar d
 
 - `br0_network/`
 - `nat_network_02/`
-- `nat_network_03/`
+- `okd_cluster/`
 
 ## Requisitos
 
@@ -73,10 +69,10 @@ cd terraform-openshift-kvm-deployment_
 
 ### Inicializar y Aplicar Terraform para `nat_network_03`
 
-1. Navegue al directorio `nat_network_03`:
+1. Navegue al directorio `nokd_cluster`:
 
    ```bash
-   cd ../nat_network_03
+   cd ../okd_cluster
    ```
 
 2. Inicialice Terraform y actualice los proveedores:
@@ -98,94 +94,6 @@ cd terraform-openshift-kvm-deployment_
 - Cada subproyecto tiene su propio `main.tf` y configuración de variables, por lo que no debería haber conflictos de nombres si sigue las instrucciones anteriores.
 - Puede ajustar las configuraciones y variables según sea necesario para adaptarse a su entorno y necesidades específicas.
 
-## Detalles de las Máquinas Virtuales
-
-### bastion_network
-
-- **Nombre:** bastion1
-- **CPU:** 2
-- **Memoria:** 2048 MB
-- **IP:** 192.168.0.35
-- **Rol:** Acceso seguro, Punto de conexión de bridge
-- **Sistema Operativo:** Rocky Linux 9.3 Minimal
-
-### nat_network_02
-
-- **Nombre:** freeipa1
-  - **CPU:** 2
-  - **Memoria:** 2048 MB
-  - **IP:** 10.17.3.11
-  - **Rol:** Servidor de DNS y gestión de identidades
-  - **Sistema Operativo:** Rocky Linux 9.3
-
-- **Nombre:** load_balancer1
-  - **CPU:** 2
-  - **Memoria:** 2048 MB
-  - **IP:** 10.17.3.12
-  - **Rol:** Balanceo de carga para el clúster
-  - **Sistema Operativo:** Rocky Linux 9.3
-
-- **Nombre:** postgresql1
-  - **CPU:** 2
-  - **Memoria:** 2048 MB
-  - **IP:** 10.17.3.13
-  - **Rol:** Gestión de bases de datos
-  - **Sistema Operativo:** Rocky Linux 9.3
-
-### nat_network_03
-
-- **Nombre:** bootstrap1
-  - **CPU:** 2
-  - **Memoria:** 2048 MB
-  - **IP:** 10.17.3.14
-  - **Rol:** Inicialización del clúster
-  - **Sistema Operativo:** Flatcar Container Linux
-
-- **Nombre:** master1
-  - **CPU:** 2
-  - **Memoria:** 4096 MB
-  - **IP:** 10.17.4.21
-  - **Rol:** Gestión del clúster
-  - **Sistema Operativo:** Flatcar Container Linux
-
-- **Nombre:** master2
-  - **CPU:** 2
-  - **Memoria:** 4096 MB
-  - **IP:** 10.17.4.22
-  - **Rol:** Gestión del clúster
-  - **Sistema Operativo:** Flatcar Container Linux
-
-- **Nombre:** master3
-  - **CPU:** 2
-  - **Memoria:** 4096 MB
-  - **IP:** 10.17.4.23
-  - **Rol:** Gestión del clúster
-  - **Sistema Operativo:** Flatcar Container Linux
-
-- **Nombre:** worker1
-  - **CPU:** 2
-  - **Memoria:** 3584 MB
-  - **IP:** 10.17.4.24
-  - **Rol:** Ejecución de aplicaciones
-  - **Sistema Operativo:** Flatcar Container Linux
-
-- **Nombre:** worker2
-  - **CPU:** 2
-  - **Memoria:** 3584 MB
-  - **IP:** 10.17.4.25
-  - **Rol:** Ejecución de aplicaciones
-  - **Sistema Operativo:** Flatcar Container Linux
-
-- **Nombre:** worker3
-  - **CPU:** 2
-  - **Memoria:** 3584 MB
-  - **IP:** 10.17.4.26
-  - **Rol:** Ejecución de aplicaciones
-  - **Sistema Operativo:** Flatcar Container Linux
-
-
-
-**Mantenedor del Proyecto:** [Victor Galvez](https://github.com/vhgalvez)
 
 # Hardware del Servidor
 
@@ -354,19 +262,16 @@ La red `kube_network_02` se utiliza para los servicios básicos del clúster, in
 | kube_network_02 | postgresql1    | 10.17.3.13   | Gestión de bases de datos         | (Virtual - NAT) |
 | kube_network_02 | bootstrap1     | 10.17.3.14   | Inicialización del clúster        | (Virtual - NAT) |
 
-### Red kube_network_03 - NAT Network
-
-La red `kube_network_03` se dedica a la gestión y ejecución de aplicaciones dentro del clúster. Esta separación asegura que las aplicaciones se ejecuten de manera eficiente y segura, sin interferir con otros servicios críticos.
 
 | Red NAT        | Nodos          | Dirección IP | Rol del Nodo              | Interfaz de Red |
 |----------------|----------------|--------------|---------------------------|-----------------|
-| kube_network_03 | master1        | 10.17.4.21   | Gestión del clúster        | (Virtual - NAT) |
-| kube_network_03 | master2        | 10.17.4.22   | Gestión del clúster        | (Virtual - NAT) |
-| kube_network_03 | master3        | 10.17.4.23   | Gestión del clúster        | (Virtual - NAT) |
-| kube_network_03 | worker1        | 10.17.4.24   | Ejecución de aplicaciones  | (Virtual - NAT) |
-| kube_network_03 | worker2        | 10.17.4.25   | Ejecución de aplicaciones  | (Virtual - NAT) |
-| kube_network_03 | worker3        | 10.17.4.26   | Ejecución de aplicaciones  | (Virtual - NAT) |
-| kube_network_03 | bootstrap      | 10.17.4.27   | Ejecución de aplicaciones  | (Virtual - NAT) |
+| kube_network_03 | master1        | 10.17.3.21   | Gestión del clúster        | (Virtual - NAT) |
+| kube_network_03 | master2        | 10.17.3.22   | Gestión del clúster        | (Virtual - NAT) |
+| kube_network_03 | master3        | 10.17.3.23   | Gestión del clúster        | (Virtual - NAT) |
+| kube_network_03 | worker1        | 10.17.3.24   | Ejecución de aplicaciones  | (Virtual - NAT) |
+| kube_network_03 | worker2        | 10.17.3.25   | Ejecución de aplicaciones  | (Virtual - NAT) |
+| kube_network_03 | worker3        | 10.17.3.26   | Ejecución de aplicaciones  | (Virtual - NAT) |
+| kube_network_03 | bootstrap      | 10.17.3.27   | Ejecución de aplicaciones  | (Virtual - NAT) |
 
 
 ## Resumen de los Hostnames e IPs
@@ -379,12 +284,12 @@ A continuación se proporciona un resumen de los hostnames e IPs para referencia
 | 10.17.3.12    | load_balancer1.cefaslocalserver.com |
 | 10.17.3.13    | postgresql1.cefaslocalserver.com |
 | 10.17.3.14    | bootstrap.cefaslocalserver.com  |
-| 10.17.4.21    | master1.cefaslocalserver.com     |
-| 10.17.4.22    | master2.cefaslocalserver.com     |
-| 10.17.4.23    | master3.cefaslocalserver.com     |
-| 10.17.4.24    | worker1.cefaslocalserver.com     |
-| 10.17.4.25    | worker2.cefaslocalserver.com     |
-| 10.17.4.26    | worker3.cefaslocalserver.com     |
+| 10.17.3.21    | master1.cefaslocalserver.com     |
+| 10.17.3.22    | master2.cefaslocalserver.com     |
+| 10.17.3.23    | master3.cefaslocalserver.com     |
+| 10.17.3.24    | worker1.cefaslocalserver.com     |
+| 10.17.3.25    | worker2.cefaslocalserver.com     |
+| 10.17.3.26    | worker3.cefaslocalserver.com     |
 
 
 ### Red br0 - Bridge Network
@@ -409,16 +314,7 @@ resource "libvirt_network" "kube_network_02" {
 }
 ```
 
-### Red kube_network_03 - NAT Network
 
-```hcl
-resource "libvirt_network" "kube_network_03" {
-  name      = "kube_network_03"
-  mode      = "nat"
-  autostart = true
-  addresses = ["10.17.4.0/24"]
-}
-```
 
 ## Tabla de Configuración de Redes - br0 - Bridge Network
 
@@ -428,7 +324,7 @@ resource "libvirt_network" "kube_network_03" {
 | enp4s0f0 | 192.168.0.18/24 |
 | enp4s0f1 | 192.168.0.35/24 |
 | virbro   | 10.17.3.1/24    |
-| virbr1   | 10.17.4.1/24    |
+| virbr1   | 10.17.3.1/24    |
 
 # Información Detallada de la Máquina
 
@@ -442,7 +338,7 @@ resource "libvirt_network" "kube_network_03" {
 | 192.168.0.28 |                                |           | br0             | UP                    | 192.168.0.28/24 (Primary)   | 255.255.255.0     |
 | 192.168.0.21 |                                |           | br0             | UP                    | 192.168.0.21/24 (Secondary) | 255.255.255.0     |
 | 10.17.3.1    |                                |           | virbr0          | UP                    | 10.17.3.1/24                | 255.255.255.0     |
-| 10.17.4.1    |                                |           | virbr1          | UP                    | 10.17.4.1/24                | 255.255.255.0     |
+| 10.17.3.1    |                                |           | virbr1          | UP                    | 10.17.3.1/24                | 255.255.255.0     |
 
 ## Detalles Adicionales de la Máquina
 
@@ -479,13 +375,6 @@ resource "libvirt_network" "kube_network_02" {
   addresses = ["10.17.3.0/24"]
 }
 
-# Red kube_network_03 - NAT Network
-resource "libvirt_network" "kube_network_03" {
-  name      = "kube_network_03"
-  mode      = "nat"
-  autostart = true
-  addresses = ["10.17.4.0/24"]
-}
 ```
 
 ## Información del Sistema
@@ -521,13 +410,13 @@ Para asegurar que el servidor físico tiene suficiente memoria para operar de ma
 | postgresql1      | 2    | 2048         | 10.17.3.13   | postgresql1.cefaslocalserver.com | 30                   |
 | bootstrap        | 2    | 2048         | 10.17.3.14   | bootstrap1.cefaslocalserver.com  | 30                   |
 | bastion1         | 2    | 2048         | 192.168.0.20 | bastion1.cefaslocalserver.com    | 30                   |
-| master1          | 2    | 4096         | 10.17.4.21   | master1.cefaslocalserver.com     | 50                   |
-| master2          | 2    | 4096         | 10.17.4.22   | master2.cefaslocalserver.com     | 50                   |
-| master3          | 2    | 4096         | 10.17.4.23   | master3.cefaslocalserver.com     | 50                   |
-| worker1          | 2    | 3584         | 10.17.4.24   | worker1.cefaslocalserver.com     | 50                   |
-| worker2          | 2    | 3584         | 10.17.4.25   | worker2.cefaslocalserver.com     | 50                   |
-| worker3          | 2    | 3584         | 10.17.4.26   | worker3.cefaslocalserver.com     | 50                   |
-| worker3          | 2    | 3584         | 10.17.4.26   | worker3.cefaslocalserver.com     | 50                   |
+| master1          | 2    | 4096         | 10.17.3.21   | master1.cefaslocalserver.com     | 50                   |
+| master2          | 2    | 4096         | 10.17.3.22   | master2.cefaslocalserver.com     | 50                   |
+| master3          | 2    | 4096         | 10.17.3.23   | master3.cefaslocalserver.com     | 50                   |
+| worker1          | 2    | 3584         | 10.17.3.24   | worker1.cefaslocalserver.com     | 50                   |
+| worker2          | 2    | 3584         | 10.17.3.25   | worker2.cefaslocalserver.com     | 50                   |
+| worker3          | 2    | 3584         | 10.17.3.26   | worker3.cefaslocalserver.com     | 50                   |
+| worker3          | 2    | 3584         | 10.17.3.26   | worker3.cefaslocalserver.com     | 50                   |
 
 ## Total de Memoria Asignada
 
@@ -590,14 +479,14 @@ url:   https://console.redhat.com/openshift/create/local
                        |                        |                        |
                        v                        v                        v
                +-------+-------+        +-------+-------+        +-------+-------+
-               | controlplane 1  |        |   controlplane 2    |        |   controlplane 3   |
-               |   IP: 10.17.4.21|      |   IP: 10.17.4.22|      |   IP: 10.17.4.23|
+               | master 1  |        |   master 2    |        |   master 3   |
+               |   IP: 10.17.3.21|      |   IP: 10.17.3.22|      |   IP: 10.17.3.23|
                +-------+-------+        +-------+-------+        +-------+-------+
                                                 |
                                                 v
                                     +-----------+----------+
                                     |  Bootstrap (OKD)     |
-                                    |   IP: 10.17.4.27     |
+                                    |   IP: 10.17.3.27     |
                                     +-----------+----------+
                                      ^          |
                                      |          v
@@ -614,7 +503,7 @@ url:   https://console.redhat.com/openshift/create/local
             v                   v                  v                  v
      +-------+-------+   +-------+-------+  +-------+-------+   +-------+-------+ 
      |   Worker 1    |   |   Worker 2    |  |   Worker 3    |   |  FreeIPA (DNS)| 
-     |   IP: 10.17.4.24| |   IP: 10.17.4.25| |   IP: 10.17.4.26| |  IP: 10.17.3.11| 
+     |   IP: 10.17.3.24| |   IP: 10.17.3.25| |   IP: 10.17.3.26| |  IP: 10.17.3.11| 
      +-------+-------+   +-------+-------+  +-------+-------+   +-------+-------+
 
 
@@ -652,9 +541,9 @@ url:   https://console.redhat.com/openshift/create/local
 | FreeIPA Node         | Rocky Linux                |
 | Load Balancer Node   | Rocky Linux                |
 | PostgreSQL Node      | Rocky Linux                |
-| Master Nodes         |Fedora CoreOS   |
-| Worker Nodes         |Fedora CoreOS   |
-| Bootstrap Node       |Fedora CoreOS   |
+| Master Nodes         |Flatcar linux container   |
+| Worker Nodes         |Flatcar linux container  |
+| Bootstrap Node       |Flatcar linux container  |
 
 
 
@@ -696,13 +585,13 @@ La red kube_network_03 se dedica a la gestión y ejecución de aplicaciones dent
 
 | Red NAT         | Nodos     | Dirección IP | Rol del Nodo          | Interfaz de Red |
 |-----------------|-----------|--------------|-----------------------|-----------------|
-| kube_network_03 | master1   | 10.17.4.21   | Gestión del clúster   | (Virtual - NAT) |
-| kube_network_03 | master2   | 10.17.4.22   | Gestión del clúster   | (Virtual - NAT) |
-| kube_network_03 | master3   | 10.17.4.23   | Gestión del clúster   | (Virtual - NAT) |
-| kube_network_03 | worker1   | 10.17.4.24   | Ejecución de aplicaciones | (Virtual - NAT) |
-| kube_network_03 | worker2   | 10.17.4.25   | Ejecución de aplicaciones | (Virtual - NAT) |
-| kube_network_03 | worker3   | 10.17.4.26   | Ejecución de aplicaciones | (Virtual - NAT) |
-| kube_network_03 | Bootstrap | 10.17.4.27   | Bootstrap | (Virtual - NAT) |
+| kube_network_03 | master1   | 10.17.3.21   | Gestión del clúster   | (Virtual - NAT) |
+| kube_network_03 | master2   | 10.17.3.22   | Gestión del clúster   | (Virtual - NAT) |
+| kube_network_03 | master3   | 10.17.3.23   | Gestión del clúster   | (Virtual - NAT) |
+| kube_network_03 | worker1   | 10.17.3.24   | Ejecución de aplicaciones | (Virtual - NAT) |
+| kube_network_03 | worker2   | 10.17.3.25   | Ejecución de aplicaciones | (Virtual - NAT) |
+| kube_network_03 | worker3   | 10.17.3.26   | Ejecución de aplicaciones | (Virtual - NAT) |
+| kube_network_03 | Bootstrap | 10.17.3.27   | Bootstrap | (Virtual - NAT) |
 
 
 # Resumen de los Hostnames e IPs
@@ -715,13 +604,13 @@ A continuación se proporciona un resumen de los hostnames e IPs para referencia
 | 10.17.3.12    | load_balancer1.cefaslocalserver.com |
 | 10.17.3.13    | postgresql1.cefaslocalserver.com |
 | 10.17.3.14    | helper.cefaslocalserver.com |
-| 10.17.4.21    | master1.cefaslocalserver.com    |
-| 10.17.4.22    | master2.cefaslocalserver.com    |
-| 10.17.4.23    | master3.cefaslocalserver.com    |
-| 10.17.4.24    | worker1.cefaslocalserver.com    |
-| 10.17.4.25    | worker2.cefaslocalserver.com    |
-| 10.17.4.26    | worker3.cefaslocalserver.com    |
-| 10.17.4.27    | bootstrap.cefaslocalserver.com |
+| 10.17.3.21    | master1.cefaslocalserver.com    |
+| 10.17.3.22    | master2.cefaslocalserver.com    |
+| 10.17.3.23    | master3.cefaslocalserver.com    |
+| 10.17.3.24    | worker1.cefaslocalserver.com    |
+| 10.17.3.25    | worker2.cefaslocalserver.com    |
+| 10.17.3.26    | worker3.cefaslocalserver.com    |
+| 10.17.3.27    | bootstrap.cefaslocalserver.com |
 
 
 
@@ -753,7 +642,7 @@ A continuación se proporciona un resumen de los hostnames e IPs para referencia
 4. **Nodos Maestros (Master 1, Master 2, Master 3)**:
    - Los nodos maestros gestionan el clúster y el control plane de Kubernetes, coordinando las tareas y servicios críticos.
 
-5. **Bootstrap Node (10.17.4.27)**:
+5. **Bootstrap Node (10.17.3.27)**:
    - El Bootstrap Node inicia la instalación de OKD, obteniendo los certificados desde el Helper Node y configurando los nodos maestros y workers.
 
 6. **Helper Node (10.17.3.14)**:
@@ -787,3 +676,5 @@ A continuación se proporciona un resumen de los hostnames e IPs para referencia
 Para cualquier duda o problema, por favor abra un issue en el repositorio o contacte al mantenedor del proyecto.
 
 **Mantenedor del Proyecto:** [Victor Galvez](https://github.com/vhgalvez)
+
+
