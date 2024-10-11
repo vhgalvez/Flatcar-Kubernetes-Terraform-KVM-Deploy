@@ -6,7 +6,7 @@ Este repositorio contiene tres subproyectos de Terraform que se deben ejecutar d
 
 - `br0_network/`
 - `nat_network_02/`
-- `okd_cluster/`
+- `nat_network_03/`
 
 ## Requisitos
 
@@ -69,10 +69,10 @@ cd terraform-openshift-kvm-deployment_
 
 ### Inicializar y Aplicar Terraform para `nat_network_03`
 
-1. Navegue al directorio `nokd_cluster`:
+1. Navegue al directorio `nnat_network_03`:
 
    ```bash
-   cd ../okd_cluster
+   cd ../nat_network_03
    ```
 
 2. Inicialice Terraform y actualice los proveedores:
@@ -314,6 +314,16 @@ resource "libvirt_network" "kube_network_02" {
 }
 ```
 
+### Red kube_network_03 - NAT Network
+
+```hcl
+resource "libvirt_network" "kube_network_03" {
+  name      = "kube_network_03"
+  mode      = "nat"
+  autostart = true
+  addresses = ["10.17.4.0/24"]
+}
+```
 
 
 ## Tabla de Configuración de Redes - br0 - Bridge Network
