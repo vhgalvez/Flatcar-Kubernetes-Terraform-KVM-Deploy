@@ -188,7 +188,7 @@ Estas interfaces se utilizan para la comunicación y conectividad de la red, inc
 
 ### Almacenamiento persistente
 
-**Rook y Ceph** Orquestar Ceph en Kubernetes para almacenamiento persistente.
+**Rook y Ceph** Rook Orquestar Ceph en Kubernetes para almacenamiento persistente.
 
 ### Especificaciones de Almacenamiento y Memoria
 
