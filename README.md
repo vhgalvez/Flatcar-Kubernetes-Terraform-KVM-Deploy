@@ -1,6 +1,5 @@
 # Flatcar-Kubernetes-Terraform-KVM-Deploy
 
-
 Este repositorio contiene tres subproyectos de Terraform que se deben ejecutar de manera independiente para evitar conflictos de nombres. Siga las instrucciones a continuación para inicializar y aplicar cada subproyecto.
 
 ## Estructura del Proyecto
@@ -683,5 +682,3 @@ A continuación se proporciona un resumen de los hostnames e IPs para referencia
 Para cualquier duda o problema, por favor abra un issue en el repositorio o contacte al mantenedor del proyecto.
 
 **Mantenedor del Proyecto:** [Victor Galvez](https://github.com/vhgalvez)
-
-
