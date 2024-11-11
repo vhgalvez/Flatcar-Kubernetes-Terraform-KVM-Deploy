@@ -1,4 +1,4 @@
-base_image = "/mnt/lv_data/organized_storage/images/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2"
+base_image = "/mnt/lv_data/organized_storage/images/flatcar_production_qemu_image.img"
 
 vm_definitions = {
   master1 = {
