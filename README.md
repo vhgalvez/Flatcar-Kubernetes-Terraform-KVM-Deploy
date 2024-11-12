@@ -675,8 +675,6 @@ A continuación se proporciona un resumen de los hostnames e IPs para referencia
 6. **FreeIPA** actúa como **servidor DNS y NTP**, asegurando la resolución de nombres y la sincronización temporal en todo el clúster.
 7. Los **nodos workers** ejecutan las aplicaciones, manteniendo la sincronización temporal con FreeIPA a través de **chronyc**.
 
-
-
 # Contacto
 
 Para cualquier duda o problema, por favor abra un issue en el repositorio o contacte al mantenedor del proyecto.
